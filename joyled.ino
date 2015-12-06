@@ -17,7 +17,6 @@ void setup() {
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
   int lr = (analogRead(JOY_LR_PIN) - 512) + calLR;
   int ud = (analogRead(JOY_UD_PIN) - 512) + calUD;
   if(zero(lr,ud)){
@@ -34,7 +33,7 @@ bool zero(int lr, int ud){
 void calculateRGB(int lr, int ud){
   //HSV to RGB color conversion: http://stackoverflow.com/a/6930407
 
-  double hue = rad2deg(getDir(lr,ud) + atan(lr/ ((float)ud)));
+  double hue = rad2deg(getQuadrant(lr,ud) + atan(lr/ ((float)ud)));
   double value = (min(490,sqrt(pow(lr,2) +pow(ud,2)))/490.0)*MAX_BRIGHTNESS;
 
   double       p, q, t, ff;
@@ -86,7 +85,7 @@ void calculateRGB(int lr, int ud){
    leds.show();
 }
 
-double getDir(int lr, int ud){
+double getQuadrant(int lr, int ud){
   if(lr < 0 && ud >= 0){
     return 2*PI;
   }else if(ud < 0){
